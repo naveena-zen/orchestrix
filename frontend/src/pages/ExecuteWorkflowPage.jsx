@@ -3,6 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { workflowsApi, executionsApi } from '../api'
 import { StatusBadge, StepTypeBadge } from '../components/Badges'
 
+const formatLabel = (name) => {
+  if (!name) return ''
+  return name.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+}
+
 function InputForm({ schema, onSubmit, loading }) {
   const [form, setForm] = useState({})
   const [errors, setErrors] = useState({})
@@ -44,9 +49,8 @@ function InputForm({ schema, onSubmit, loading }) {
       {schema.map(field => (
         <div key={field.name}>
           <label className="label">
-            {field.name}
+            {formatLabel(field.name)}
             {field.required && <span className="text-red-400 ml-1">*</span>}
-            <span className="text-gray-500 ml-2 font-normal text-xs">({field.type})</span>
           </label>
           {field.allowed_values?.length ? (
             <select
@@ -71,7 +75,7 @@ function InputForm({ schema, onSubmit, loading }) {
             <input
               className="input"
               type={field.type === 'number' ? 'number' : 'text'}
-              placeholder={`Enter ${field.name}`}
+              placeholder={`Enter ${formatLabel(field.name)}`}
               value={form[field.name] || ''}
               onChange={e => setForm(f => ({ ...f, [field.name]: e.target.value }))}
             />
