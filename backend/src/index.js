@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 
 const workflowRoutes = require('./routes/workflowRoutes');
 const stepRoutes = require('./routes/stepRoutes');
@@ -16,13 +17,20 @@ app.use(express.json());
 app.get('/health', (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
 
 // Routes
-app.use('/workflows', workflowRoutes);
-app.use('/steps', stepRoutes);
-app.use('/rules', ruleRoutes);
-app.use('/executions', executionRoutes);
+app.use('/api/workflows', workflowRoutes);
+app.use('/api/steps', stepRoutes);
+app.use('/api/rules', ruleRoutes);
+app.use('/api/executions', executionRoutes);
 
-// 404 handler
-app.use((req, res) => res.status(404).json({ success: false, error: `Route ${req.method} ${req.path} not found` }));
+// 404 handler for API routes
+app.use('/api/*', (req, res) => res.status(404).json({ success: false, error: `Route ${req.method} ${req.path} not found` }));
+
+// Serve frontend static build
+const distPath = path.join(__dirname, '../../frontend/dist');
+app.use(express.static(distPath));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
+});
 
 // Error handler
 app.use((err, req, res, next) => {
