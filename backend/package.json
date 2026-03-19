@@ -1,5 +1,5 @@
 {
-  "name": "workflow-automation-backend",
+  "name": "orchestrix-backend",
   "version": "1.0.0",
   "description": "Workflow Automation System Backend",
   "main": "src/index.js",

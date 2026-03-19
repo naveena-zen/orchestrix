@@ -19,8 +19,8 @@ export default function Layout({ children }) {
               ⚙️
             </div>
             <div>
-              <h1 className="font-bold text-white text-sm">WorkflowOS</h1>
-              <p className="text-xs text-gray-500">Automation Platform</p>
+              <h1 className="font-bold text-white text-sm">Orchestrix</h1>
+              <p className="text-xs text-gray-500">Workflow Automation Platform</p>
             </div>
           </div>
         </div>

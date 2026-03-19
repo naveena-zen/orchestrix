@@ -1,4 +1,5 @@
-# Workflow Automation System
+# Orchestrix
+### Workflow Automation Platform
 ### Halleyx Full Stack Engineer Challenge I - 2026
 
 A full-stack workflow automation platform that allows users to design workflows, 
