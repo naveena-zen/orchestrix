@@ -1,0 +1,21 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install dependencies first for caching
+COPY package*.json ./
+COPY prisma ./prisma/
+
+RUN npm ci
+
+# Generate Prisma client
+RUN npx prisma generate
+
+# Copy the rest of the app
+COPY . .
+
+# Expose port
+EXPOSE 4000
+
+# Start script
+CMD [ "npm", "run", "setup" ]

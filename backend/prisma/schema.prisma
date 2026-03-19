@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Workflow {
+  id           String      @id @default(uuid())
+  name         String
+  description  String?
+  version      Int         @default(1)
+  is_active    Boolean     @default(true)
+  input_schema Json        @default("[]")
+  start_step_id String?
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @updatedAt
+
+  steps        Step[]
+  executions   Execution[]
+
+  @@map("workflows")
+}
+
+model Step {
+  id          String   @id @default(uuid())
+  workflow_id String
+  name        String
+  step_type   StepType
+  order       Int
+  metadata    Json     @default("{}")
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  workflow    Workflow  @relation(fields: [workflow_id], references: [id], onDelete: Cascade)
+  rules       Rule[]   @relation("StepRules")
+  incoming_rules Rule[] @relation("NextStepRules")
+  executions  Execution[] @relation("CurrentStep")
+
+  @@map("steps")
+}
+
+model Rule {
+  id           String   @id @default(uuid())
+  step_id      String
+  condition    String
+  next_step_id String?
+  priority     Int
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  step         Step     @relation("StepRules", fields: [step_id], references: [id], onDelete: Cascade)
+  next_step    Step?    @relation("NextStepRules", fields: [next_step_id], references: [id], onDelete: SetNull)
+
+  @@map("rules")
+}
+
+model Execution {
+  id               String          @id @default(uuid())
+  workflow_id      String
+  workflow_version Int
+  status           ExecutionStatus @default(pending)
+  data             Json            @default("{}")
+  logs             Json            @default("[]")
+  current_step_id  String?
+  retries          Int             @default(0)
+  triggered_by     String
+  started_at       DateTime        @default(now())
+  ended_at         DateTime?
+
+  workflow         Workflow        @relation(fields: [workflow_id], references: [id])
+  current_step     Step?           @relation("CurrentStep", fields: [current_step_id], references: [id])
+
+  @@map("executions")
+}
+
+enum StepType {
+  task
+  approval
+  notification
+}
+
+enum ExecutionStatus {
+  pending
+  in_progress
+  completed
+  failed
+  canceled
+}
