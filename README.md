@@ -228,22 +228,39 @@ Step 3 — CEO Approval
 ---
 
 ## Project Structure
-
-workflow-automation-system/
+```
+Orchestrix/
 ├── backend/
 │   ├── prisma/
 │   │   ├── schema.prisma
 │   │   └── seed.js
 │   ├── src/
 │   │   ├── controllers/
+│   │   │   ├── workflowController.js
+│   │   │   ├── stepController.js
+│   │   │   ├── ruleController.js
+│   │   │   └── executionController.js
 │   │   ├── engine/
+│   │   │   ├── ruleEngine.js
+│   │   │   └── executionEngine.js
 │   │   ├── routes/
+│   │   │   └── index.js
 │   │   └── index.js
+│   ├── .env.example
 │   └── package.json
 ├── frontend/
 │   ├── src/
 │   │   ├── pages/
+│   │   │   ├── WorkflowListPage.jsx
+│   │   │   ├── WorkflowEditorPage.jsx
+│   │   │   ├── RuleEditorPage.jsx
+│   │   │   ├── ExecuteWorkflowPage.jsx
+│   │   │   └── AuditLogPage.jsx
 │   │   ├── components/
-│   │   └── api/
+│   │   ├── api/
+│   │   │   └── index.js
+│   │   └── App.jsx
+│   ├── .env.example
 │   └── package.json
 └── README.md
+```
