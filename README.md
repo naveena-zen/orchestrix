@@ -8,6 +8,10 @@ notifications, approvals, and dynamic decision-making based on input data.
 
 ---
 
+## Live Demo
+https://orchestrix-fullstack.onrender.com
+
+---
 ## Tech Stack
 
 - **Frontend**: React.js + Vite + Tailwind CSS
