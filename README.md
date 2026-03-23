@@ -10,6 +10,8 @@ notifications, approvals, and dynamic decision-making based on input data.
 
 ## Live Demo
 https://orchestrix-fullstack.onrender.com
+## Demo Video
+https://youtu.be/b5Qc7CfYSbw
 
 ---
 ## Tech Stack
